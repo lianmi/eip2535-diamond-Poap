@@ -6,6 +6,7 @@ export async function deployDiamond(facetNames: string[], init = ''): Promise<st
   // get owner account
   const accounts = await ethers.getSigners()
   const contractOwner = accounts[0]
+  const addr1 = accounts[1]
 
   // deploy DiamondCutFacet
   const diamondCutFacet = await deployFacet('DiamondCutFacet')
@@ -15,7 +16,7 @@ export async function deployDiamond(facetNames: string[], init = ''): Promise<st
   const poapName = "PoapSBTs";
   const uri = "https://sbts_poap.xyz/token/";
   const Diamond = await ethers.getContractFactory('Diamond')
-  const diamond = await Diamond.deploy(contractOwner.address, diamondCutFacet.address,poapName,poapName,uri)
+  const diamond = await Diamond.deploy(contractOwner.address, diamondCutFacet.address,poapName,poapName,uri,[addr1.address])
   await diamond.deployed()
   console.log('Diamond deployed:', diamond.address)
 

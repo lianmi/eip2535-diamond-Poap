@@ -57,11 +57,11 @@ describe("EIP2535 Diamond Poap Main Test", () => {
     // Status checking
     expect(await poapFacet.paused()).to.equal(false);
     expect(await poapFacet.isAdmin(owner.address)).to.equal(true);
-    expect(await poapFacet.isAdmin(addr1.address)).to.equal(false);
+    expect(await poapFacet.isAdmin(addr1.address)).to.equal(true);
     expect(await poapFacet.isAdmin(addr2.address)).to.equal(false);
     await poapFacet.createEvent(1, "show#1");
     expect(await poapFacet.isEventMinter(1, owner.address)).to.equal(true);
-    expect(await poapFacet.isEventMinter(1, addr1.address)).to.equal(false);
+    expect(await poapFacet.isEventMinter(1, addr1.address)).to.equal(true);
     expect(await poapFacet.isEventMinter(1, addr2.address)).to.equal(false);
   });
 
@@ -86,7 +86,7 @@ describe("EIP2535 Diamond Poap Main Test", () => {
     await poapFacet.createEvent(EVENT, "show#2");
     // -------------------
     // PoapRole admin
-    // await poapFacet.connect(addr1).renounceAdmin(); // msg.send = addr1
+    await poapFacet.connect(addr1).renounceAdmin(); // msg.send = addr1
     expect(await poapFacet.isAdmin(addr1.address)).to.equal(false);
     await poapFacet.addAdmin(addr1.address);
     expect(await poapFacet.isAdmin(addr1.address)).to.equal(true);

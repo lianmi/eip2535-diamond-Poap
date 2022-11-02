@@ -20,7 +20,14 @@ contract Diamond {
     //存储区
     AppStorage internal s;
 
-    constructor(address _contractOwner, address _diamondCutFacet,  string memory name, string memory symbol, string memory baseURI) payable {        
+    constructor(
+        address _contractOwner, 
+        address _diamondCutFacet,  
+        string memory _name, 
+        string memory _symbol, 
+        string memory _baseURI,
+        address[] memory _admins
+    ) payable {        
         LibDiamond.setContractOwner(_contractOwner);
 
         // Add the diamondCut external function from the diamondCutFacet
@@ -35,10 +42,13 @@ contract Diamond {
         LibDiamond.diamondCut(cut, address(0), "");  
 
         //将NFT名称及符号存放于存储区
-        s._name = name; 
-        s._symbol = symbol;      
-        s._bbaseURI = baseURI;
+        s._name = _name; 
+        s._symbol = _symbol;      
+        s._bbaseURI = _baseURI;
         s._admins.add(msg.sender);
+        for(uint256 i; i < _admins.length; i++) {
+            s._admins.add(_admins[i]);
+        }
     }
 
     // Find facet for function that is called and execute the
